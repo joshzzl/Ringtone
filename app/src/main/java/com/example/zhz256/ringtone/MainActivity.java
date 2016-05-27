@@ -49,9 +49,12 @@ public class MainActivity extends AppCompatActivity {
         mute = (Switch)findViewById(R.id.mute);
         vibrate = (Switch)findViewById(R.id.vibrate);
         sound = (Switch)findViewById(R.id.sound);
-        mute.setChecked(false);
-        vibrate.setChecked(false);
-        sound.setChecked(true);
+        Ring.setMute(false);
+        Ring.setSound(true);
+        Ring.setVibrate(false);
+        mute.setChecked(Ring.isMute());
+        sound.setChecked(Ring.isSound());
+        vibrate.setChecked(Ring.isVibrate());
 
         mute.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
