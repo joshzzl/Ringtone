@@ -12,36 +12,42 @@
     tools:context="com.example.zhz256.ringtone.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        android:id="@+id/textView" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="set Ringtone"
-        android:id="@+id/setR"
-        android:layout_below="@+id/textView"
+        android:text="set Ring1"
+        android:id="@+id/setR1"
         android:layout_alignParentStart="true"
         android:layout_marginTop="176dp"
         android:nestedScrollingEnabled="true"
-        android:onClick="OnClickSet" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/textView2" />
+        android:onClick="Set1" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="play"
-        android:id="@+id/button"
-        android:layout_alignBottom="@+id/setR"
-        android:layout_toRightOf="@+id/setR"
+        android:text="play1"
+        android:id="@+id/play1"
+        android:layout_alignBottom="@+id/setR1"
+        android:layout_toRightOf="@+id/setR1"
         android:layout_marginLeft="50dp"
-        android:onClick="OnClickPlay" />
+        android:onClick="Play1" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="set ring2"
+        android:id="@+id/setR2"
+        android:layout_below="@+id/setR1"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="61dp"
+        android:onClick="Set2" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="play2"
+        android:id="@+id/play2"
+        android:layout_alignBottom="@+id/setR2"
+        android:layout_alignStart="@+id/play1"
+        android:onClick="Play2" />
 </RelativeLayout>

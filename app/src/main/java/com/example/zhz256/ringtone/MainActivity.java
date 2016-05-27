@@ -19,6 +19,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private String chosenRingtone;
+    example e1, e2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,10 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        e1 = new example("e1", 1);
+        e2 = new example("e2", 2);
+        Toast.makeText(MainActivity.this, "1: " + e1.getSound().toString()+" 2: "+e2.getSound().toString(), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -45,14 +50,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void OnClickPlay(View view){
-        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+    public void Play1(View view){
+        Uri notification = e1.getSound();
         Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
         r.play();
-        Toast.makeText(MainActivity.this, "Playing", Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, "Playing 1, name: "+e1.getName(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, "Priority: "+e1.getPriority(), Toast.LENGTH_SHORT).show();
     }
 
-    public void OnClickSet(View view){
+    public void Set1(View view){
         Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select tone");
@@ -60,23 +66,33 @@ public class MainActivity extends AppCompatActivity {
         this.startActivityForResult(intent, 5);
     }
 
+    public void Play2(View view){
+        Uri notification = e2.getSound();
+        Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+        r.play();
+        Toast.makeText(MainActivity.this, "Playing 2, name: "+e2.getName(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, "Priority: "+e2.getPriority(), Toast.LENGTH_SHORT).show();
+    }
+
+    public void Set2(View view){
+        Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select tone");
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
+        this.startActivityForResult(intent, 6);
+    }
+
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent intent)
     {
+        Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
         if (resultCode == Activity.RESULT_OK && requestCode == 5)
         {
-            Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-
-            if (uri != null)
-            {
-                this.chosenRingtone = uri.toString();
-                Toast.makeText(MainActivity.this, "set to "+uri.toString(), Toast.LENGTH_SHORT).show();
-            }
-            else
-            {
-                this.chosenRingtone = null;
-                Toast.makeText(MainActivity.this, "set to null", Toast.LENGTH_SHORT).show();
-            }
+            e1.setSound(uri);
+        }
+        else if (resultCode == Activity.RESULT_OK && requestCode == 6)
+        {
+            e2.setSound(uri);
         }
     }
 
