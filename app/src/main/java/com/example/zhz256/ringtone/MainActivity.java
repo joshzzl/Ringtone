@@ -22,7 +22,6 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String chosenRingtone;
     Ring r;
     Thread vib;
 
