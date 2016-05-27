@@ -105,8 +105,12 @@ public class MainActivity extends AppCompatActivity {
     public void Play(View view){
         if(!Ring.isMute()){
             if(Ring.isVibrate()){
-                Vibrator v = (Vibrator)this.getSystemService(Context.VIBRATOR_SERVICE);
-                v.vibrate(500);
+                Vibrator v = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+                if(v==null){
+                    Toast.makeText(MainActivity.this, "No vibration service", Toast.LENGTH_SHORT).show();
+                }else {
+                    v.vibrate(500);
+                }
             }
             if(Ring.isSound()){
                 Uri notification = r.getRingtone();
