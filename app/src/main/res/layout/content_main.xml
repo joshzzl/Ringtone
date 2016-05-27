@@ -15,39 +15,50 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="set Ring1"
-        android:id="@+id/setR1"
+        android:text="set Ringtone"
+        android:id="@+id/setR"
         android:layout_alignParentStart="true"
         android:layout_marginTop="176dp"
         android:nestedScrollingEnabled="true"
-        android:onClick="Set1" />
+        android:onClick="Set" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="play1"
-        android:id="@+id/play1"
-        android:layout_alignBottom="@+id/setR1"
-        android:layout_toRightOf="@+id/setR1"
+        android:text="play"
+        android:id="@+id/play"
+        android:layout_alignBottom="@+id/setR"
+        android:layout_toRightOf="@+id/setR"
         android:layout_marginLeft="50dp"
-        android:onClick="Play1" />
+        android:onClick="Play" />
 
-    <Button
+    <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="set ring2"
-        android:id="@+id/setR2"
-        android:layout_below="@+id/setR1"
+        android:text="Mute"
+        android:id="@+id/mute"
+        android:layout_below="@+id/setR"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="61dp"
-        android:onClick="Set2" />
+        android:layout_marginTop="74dp"
+        android:checked="false"
+        android:enabled="true" />
 
-    <Button
+    <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="play2"
-        android:id="@+id/play2"
-        android:layout_alignBottom="@+id/setR2"
-        android:layout_alignStart="@+id/play1"
-        android:onClick="Play2" />
+        android:text="vibrate"
+        android:id="@+id/vibrate"
+        android:checked="false"
+        android:layout_alignTop="@+id/mute"
+        android:layout_toEndOf="@+id/setR" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="sound"
+        android:id="@+id/sound"
+        android:layout_alignTop="@+id/vibrate"
+        android:layout_alignParentEnd="true"
+        android:checked="true" />
+
 </RelativeLayout>

@@ -1,12 +1,14 @@
 package com.example.zhz256.ringtone;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,12 +16,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     private String chosenRingtone;
-    example e1, e2;
+    Ring r;
+
+    Switch mute;
+    Switch vibrate;
+    Switch sound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +45,52 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        e1 = new example("e1", 1);
-        e2 = new example("e2", 2);
-        Toast.makeText(MainActivity.this, "1: " + e1.getSound().toString()+" 2: "+e2.getSound().toString(), Toast.LENGTH_LONG).show();
+        r = new Ring();
+        mute = (Switch)findViewById(R.id.mute);
+        vibrate = (Switch)findViewById(R.id.vibrate);
+        sound = (Switch)findViewById(R.id.sound);
+        mute.setChecked(false);
+        vibrate.setChecked(false);
+        sound.setChecked(true);
+
+        mute.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    Ring.setMute(true);
+                } else {
+                    Ring.setMute(false);
+                }
+                sound.setChecked(Ring.isSound());
+                vibrate.setChecked(Ring.isVibrate());
+            }
+        });
+
+        vibrate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    Ring.setVibrate(true);
+                }else{
+                    Ring.setVibrate(false);
+                }
+                mute.setChecked(Ring.isMute());
+                sound.setChecked(Ring.isSound());
+            }
+        });
+
+        sound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    Ring.setSound(true);
+                } else {
+                    Ring.setSound(false);
+                }
+                mute.setChecked(Ring.isMute());
+                vibrate.setChecked(Ring.isVibrate());
+            }
+        });
     }
 
     @Override
@@ -50,15 +101,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void Play1(View view){
-        Uri notification = e1.getSound();
-        Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-        r.play();
-        Toast.makeText(MainActivity.this, "Playing 1, name: "+e1.getName(), Toast.LENGTH_SHORT).show();
-        Toast.makeText(MainActivity.this, "Priority: "+e1.getPriority(), Toast.LENGTH_SHORT).show();
+    public void Play(View view){
+        if(!Ring.isMute()){
+            if(Ring.isVibrate()){
+                Vibrator v = (Vibrator)this.getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(500);
+            }
+            if(Ring.isSound()){
+                Uri notification = r.getRingtone();
+                Ringtone ringtone = RingtoneManager.getRingtone(getApplicationContext(), notification);
+                ringtone.play();
+                Toast.makeText(MainActivity.this, "Playing : "+r.getRingtone().toString(), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
-    public void Set1(View view){
+    public void Set(View view){
         Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select tone");
@@ -66,33 +124,13 @@ public class MainActivity extends AppCompatActivity {
         this.startActivityForResult(intent, 5);
     }
 
-    public void Play2(View view){
-        Uri notification = e2.getSound();
-        Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-        r.play();
-        Toast.makeText(MainActivity.this, "Playing 2, name: "+e2.getName(), Toast.LENGTH_SHORT).show();
-        Toast.makeText(MainActivity.this, "Priority: "+e2.getPriority(), Toast.LENGTH_SHORT).show();
-    }
-
-    public void Set2(View view){
-        Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
-        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
-        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select tone");
-        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
-        this.startActivityForResult(intent, 6);
-    }
 
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent intent)
     {
         Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-        if (resultCode == Activity.RESULT_OK && requestCode == 5)
-        {
-            e1.setSound(uri);
-        }
-        else if (resultCode == Activity.RESULT_OK && requestCode == 6)
-        {
-            e2.setSound(uri);
+        if (resultCode == Activity.RESULT_OK && requestCode == 5) {
+            r.setRingtone(uri);
         }
     }
 
