@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -61,8 +61,11 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     Ring.setMute(true);
+                    Ring.setSound(false);
+                    Ring.setVibrate(false);
                 } else {
                     Ring.setMute(false);
+                    Ring.setSound(true);
                 }
                 sound.setChecked(Ring.isSound());
                 vibrate.setChecked(Ring.isVibrate());
@@ -74,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     Ring.setVibrate(true);
+                    Ring.setMute(false);
                 }else{
                     Ring.setVibrate(false);
                 }
@@ -87,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+                    Ring.setMute(false);
                     Ring.setSound(true);
                 } else {
                     Ring.setSound(false);
