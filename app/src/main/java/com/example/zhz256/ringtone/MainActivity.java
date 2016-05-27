@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String chosenRingtone;
     Ring r;
+    Thread vib;
 
     Switch mute;
     Switch vibrate;
@@ -105,15 +106,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void Play(View view){
-        if(!Ring.isMute()){
-            if(Ring.isVibrate()){
+    final class VibrateThread implements Runnable{
+        Vibrator v;
+        public VibrateThread(){
+        }
+        @Override
+        public void run(){
+            synchronized (this){
                 Vibrator v = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
                 if(v==null){
                     Toast.makeText(MainActivity.this, "No vibration service", Toast.LENGTH_SHORT).show();
                 }else {
-                    v.vibrate(500);
+                    v.vibrate(200);
                 }
+            }
+        }
+    }
+
+    public void Play(View view){
+        if(!Ring.isMute()){
+            if(Ring.isVibrate()){
+                vib = new Thread(new VibrateThread());
+                vib.start();
             }
             if(Ring.isSound()){
                 Uri notification = r.getRingtone();

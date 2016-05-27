@@ -1,7 +1,11 @@
 package com.example.zhz256.ringtone;
 
+import android.content.Context;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Vibrator;
+import android.widget.Toast;
+
 import java.util.Date;
 
 /**
@@ -12,6 +16,8 @@ public class Ring {
     static boolean vibrate;
     static boolean mute;
     static boolean sound;
+
+
 
     public Ring (){
         ringtone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
