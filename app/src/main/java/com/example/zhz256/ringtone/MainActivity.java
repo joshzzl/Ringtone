@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 if(v==null){
                     Toast.makeText(MainActivity.this, "No vibration service", Toast.LENGTH_SHORT).show();
                 }else {
-                    v.vibrate(200);
+                    v.vibrate(500);
                 }
             }
         }
@@ -132,8 +132,8 @@ public class MainActivity extends AppCompatActivity {
                 Uri notification = r.getRingtone();
                 Ringtone ringtone = RingtoneManager.getRingtone(getApplicationContext(), notification);
                 ringtone.play();
-                Toast.makeText(MainActivity.this, "Playing : "+r.getRingtone().toString(), Toast.LENGTH_SHORT).show();
             }
+            Toast.makeText(MainActivity.this, "Notification", Toast.LENGTH_SHORT).show();
         }
     }
 
