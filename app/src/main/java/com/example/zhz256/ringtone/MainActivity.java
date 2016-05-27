@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
     public void Play(View view){
         if(!Ring.isMute()){
             if(Ring.isVibrate()){
-                Vibrator v = (Vibrator)this.getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+                Vibrator v = (Vibrator)this.getSystemService(Context.VIBRATOR_SERVICE);
                 v.vibrate(500);
             }
             if(Ring.isSound()){

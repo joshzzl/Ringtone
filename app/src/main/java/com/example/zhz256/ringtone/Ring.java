@@ -39,8 +39,8 @@ public class Ring {
 
     public static void setSound(boolean flag) {
         if (flag) {
-            sound = true;
             mute = false;
+            sound = true;
         }else{
             sound=false;
         }
@@ -48,8 +48,8 @@ public class Ring {
 
     public static void setVibrate(boolean flag){
         if (flag) {
-            vibrate=true;
             mute = false;
+            vibrate=true;
         }else{
             vibrate=false;
         }
