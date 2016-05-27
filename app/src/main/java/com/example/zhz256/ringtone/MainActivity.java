@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 mute.setChecked(Ring.isMute());
                 sound.setChecked(Ring.isSound());
+                vibrate.setChecked(Ring.isVibrate());
             }
         });
 
