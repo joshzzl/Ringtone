@@ -16,14 +16,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-
-    Ring r;
-    Thread vib;
+    Spinner spinner;
+    ArrayAdapter<CharSequence> adapter;
+    RingVib ringVib;
+    Thread vibThread;
 
     Switch mute;
     Switch vibrate;
@@ -45,30 +49,46 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        r = new Ring();
+        spinner = (Spinner)findViewById(R.id.spinner);
+        adapter = ArrayAdapter.createFromResource(this, R.array.Patterns, R.layout.support_simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ringVib.getVibration().selectPattern(position);
+                Toast.makeText(getBaseContext(), parent.getItemAtPosition(position)+" selected", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        ringVib = new RingVib();
         mute = (Switch)findViewById(R.id.mute);
         vibrate = (Switch)findViewById(R.id.vibrate);
         sound = (Switch)findViewById(R.id.sound);
-        Ring.setMute(false);
-        Ring.setSound(true);
-        Ring.setVibrate(false);
-        mute.setChecked(Ring.isMute());
-        sound.setChecked(Ring.isSound());
-        vibrate.setChecked(Ring.isVibrate());
+        RingVib.setMute(false);
+        RingVib.setSound(true);
+        RingVib.setVibrate(false);
+        mute.setChecked(RingVib.isMute());
+        sound.setChecked(RingVib.isSound());
+        vibrate.setChecked(RingVib.isVibrate());
 
         mute.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    Ring.setMute(true);
-                    Ring.setSound(false);
-                    Ring.setVibrate(false);
+                    RingVib.setMute(true);
+                    RingVib.setSound(false);
+                    RingVib.setVibrate(false);
                 } else {
-                    Ring.setMute(false);
-                    Ring.setSound(true);
+                    RingVib.setMute(false);
+                    RingVib.setSound(true);
                 }
-                sound.setChecked(Ring.isSound());
-                vibrate.setChecked(Ring.isVibrate());
+                sound.setChecked(RingVib.isSound());
+                vibrate.setChecked(RingVib.isVibrate());
             }
         });
 
@@ -76,14 +96,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    Ring.setVibrate(true);
-                    Ring.setMute(false);
+                    RingVib.setVibrate(true);
+                    RingVib.setMute(false);
                 }else{
-                    Ring.setVibrate(false);
+                    RingVib.setVibrate(false);
                 }
-                mute.setChecked(Ring.isMute());
-                sound.setChecked(Ring.isSound());
-                vibrate.setChecked(Ring.isVibrate());
+                mute.setChecked(RingVib.isMute());
+                sound.setChecked(RingVib.isSound());
+                vibrate.setChecked(RingVib.isVibrate());
             }
         });
 
@@ -91,13 +111,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    Ring.setMute(false);
-                    Ring.setSound(true);
+                    RingVib.setMute(false);
+                    RingVib.setSound(true);
                 } else {
-                    Ring.setSound(false);
+                    RingVib.setSound(false);
                 }
-                mute.setChecked(Ring.isMute());
-                vibrate.setChecked(Ring.isVibrate());
+                mute.setChecked(RingVib.isMute());
+                vibrate.setChecked(RingVib.isVibrate());
             }
         });
     }
@@ -111,30 +131,30 @@ public class MainActivity extends AppCompatActivity {
 
 
     final class VibrateThread implements Runnable{
-        Vibrator v;
+        Vibrator vib;
         public VibrateThread(){
         }
         @Override
         public void run(){
             synchronized (this){
-                Vibrator v = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-                if(v==null){
+                vib = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+                if(vib==null){
                     Toast.makeText(MainActivity.this, "No vibration service", Toast.LENGTH_SHORT).show();
                 }else {
-                    v.vibrate(500);
+                    vib.vibrate(ringVib.getVibration().getPattern(),2);
                 }
             }
         }
     }
 
     public void Play(View view){
-        if(!Ring.isMute()){
-            if(Ring.isVibrate()){
-                vib = new Thread(new VibrateThread());
-                vib.start();
+        if(!RingVib.isMute()){
+            if(RingVib.isVibrate()){
+                vibThread = new Thread(new VibrateThread());
+                vibThread.start();
             }
-            if(Ring.isSound()){
-                Uri notification = r.getRingtone();
+            if(RingVib.isSound()){
+                Uri notification = ringVib.getRing().getRingtone();
                 Ringtone ringtone = RingtoneManager.getRingtone(getApplicationContext(), notification);
                 ringtone.play();
             }
@@ -156,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
     {
         Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
         if (resultCode == Activity.RESULT_OK && requestCode == 5) {
-            r.setRingtone(uri);
+            ringVib.getRing().setRingtone(uri);
         }
     }
 

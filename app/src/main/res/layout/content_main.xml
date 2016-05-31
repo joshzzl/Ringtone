@@ -61,4 +61,22 @@
         android:layout_alignParentEnd="true"
         android:checked="true" />
 
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:layout_marginTop="28dp"
+        android:spinnerMode="dialog"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/play" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Vibration Pattern:"
+        android:id="@+id/select_pattern"
+        android:layout_alignTop="@+id/spinner"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>
