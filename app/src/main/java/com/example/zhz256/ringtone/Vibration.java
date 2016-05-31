@@ -10,10 +10,10 @@ import java.util.Arrays;
  */
 public class Vibration {
 
-    final ArrayList<long[]> patterns = new ArrayList<>(Arrays.asList(new long[]{100, 0, 100},
-                                                                     new long[]{50, 0, 200},
-                                                                     new long[]{100, 0, 200, 0, 100},
-                                                                     new long[]{50, 0, 50, 0}));
+    final ArrayList<long[]> patterns = new ArrayList<>(Arrays.asList(new long[]{0, 300, 200,300},
+                                                                     new long[]{0, 500,250, 500},
+                                                                     new long[]{0, 400, 300, 400},
+                                                                     new long[]{0, 300, 100, 500}));
     private long[] pattern;
 
     public Vibration(){

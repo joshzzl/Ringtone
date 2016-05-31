@@ -37,17 +37,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         spinner = (Spinner)findViewById(R.id.spinner);
         adapter = ArrayAdapter.createFromResource(this, R.array.Patterns, R.layout.support_simple_spinner_dropdown_item);
@@ -57,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 ringVib.getVibration().selectPattern(position);
-                Toast.makeText(getBaseContext(), parent.getItemAtPosition(position)+" selected", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getBaseContext(), parent.getItemAtPosition(position)+" selected", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -139,9 +129,10 @@ public class MainActivity extends AppCompatActivity {
             synchronized (this){
                 vib = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
                 if(vib==null){
-                    Toast.makeText(MainActivity.this, "No vibration service", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainActivity.this, "No vibration service", Toast.LENGTH_SHORT).show();
                 }else {
-                    vib.vibrate(ringVib.getVibration().getPattern(),2);
+                    vib.vibrate(ringVib.getVibration().getPattern(),-1);
+                    //Toast.makeText(MainActivity.this, "Vibrating", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -158,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                 Ringtone ringtone = RingtoneManager.getRingtone(getApplicationContext(), notification);
                 ringtone.play();
             }
-            Toast.makeText(MainActivity.this, "Notification", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MainActivity.this, "Notification", Toast.LENGTH_SHORT).show();
         }
     }
 
