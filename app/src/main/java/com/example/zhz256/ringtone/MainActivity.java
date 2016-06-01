@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent intent)
     {
         Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-        if (resultCode == Activity.RESULT_OK && requestCode == 5) {
+        if (resultCode == Activity.RESULT_OK && requestCode == 5 && uri !=null) {
             ringVib.getRing().setRingtone(uri);
         }
     }
