@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<CharSequence> adapter;
     RingVib ringVib;
     Thread vibThread;
+    TextView ringTitle;
 
     Switch mute;
     Switch vibrate;
@@ -55,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ringTitle = (TextView)findViewById(R.id.ringTitle);
+
         ringVib = new RingVib();
         mute = (Switch)findViewById(R.id.mute);
         vibrate = (Switch)findViewById(R.id.vibrate);
@@ -65,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         mute.setChecked(RingVib.isMute());
         sound.setChecked(RingVib.isSound());
         vibrate.setChecked(RingVib.isVibrate());
+        updateRingTitle(ringVib.getRing().getRingtone());
 
         mute.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -110,6 +115,15 @@ public class MainActivity extends AppCompatActivity {
                 vibrate.setChecked(RingVib.isVibrate());
             }
         });
+    }
+
+    public void updateRingTitle(Uri ring){
+        if(ring == null)
+            ringTitle.setText("None");
+        else{
+            Ringtone ringtone = RingtoneManager.getRingtone(this, ring);
+            ringTitle.setText( ringtone.getTitle(this) );
+        }
     }
 
     @Override
@@ -170,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK && requestCode == 5) {
                 ringVib.getRing().setRingtone(uri);
             }
+            updateRingTitle(ringVib.getRing().getRingtone());
         }
     }
 
