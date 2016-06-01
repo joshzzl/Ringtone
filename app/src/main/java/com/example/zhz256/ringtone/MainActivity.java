@@ -165,9 +165,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent intent)
     {
-        Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-        if (resultCode == Activity.RESULT_OK && requestCode == 5 && uri !=null) {
-            ringVib.getRing().setRingtone(uri);
+        if(intent !=null){
+            Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+            if (resultCode == Activity.RESULT_OK && requestCode == 5) {
+                ringVib.getRing().setRingtone(uri);
+            }
         }
     }
 
