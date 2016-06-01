@@ -3,10 +3,15 @@
     <string name="action_settings">Settings</string>
 
     <string-array name="Patterns">
-        <item>Pattern_1</item>
-        <item>Pattern_2</item>
-        <item>Pattern_3</item>
-        <item>Pattern_4</item>
-    </string-array>>
+        <item>Pattern 1</item>
+        <item>Pattern 2</item>
+        <item>Pattern 3</item>
+        <item>Pattern 4</item>
+        <item>Pattern 5</item>
+        <item>Pattern 6</item>
+        <item>Pattern 7</item>
+        <item>Pattern 8</item>
+        <item>Pattern 9</item>
+    </string-array>
 
 </resources>
